@@ -11,8 +11,7 @@ class Skillshare(object):
     def __init__(
         self,
         cookie,
-        download_path=os.environ.get(
-            'FILE_PATH', './drive/Shareddrives/SharedBox/01 SkillBox'),
+        download_path=os.environ.get('FILE_PATH', './Skillshare'),
         pk='BCpkADawqM2OOcM6njnM7hf9EaK6lIFlqiXB0iWjqGWUQjU7R8965xUvIQNqdQbnDTLz0IAO7E6Ir2rIbXJtFdzrGtitoee0n1XXRliD-RH9A-svuvNW9qgo3Bh34HEZjXjG4Nml4iyz3KqF',
         brightcove_account_id=3695997568001,
     ):
@@ -69,16 +68,12 @@ class Skillshare(object):
         if not os.path.exists(base_path):
             os.makedirs(base_path)
 
-        # for u in data['_embedded']['units']['_embedded']['units']:
         for s in data['_embedded']['sessions']['_embedded']['sessions']:
             video_id = None
-            # print(s,':', s['video_hashed_id'])
-            # continue
             if 'video_hashed_id' in s and s['video_hashed_id']:
                 video_id = s['video_hashed_id'].split(':')[1]
-
-            if not video_id:
-                raise Exception('Failed to read video ID from data')
+            elif 'video_thumbnail_url' in s and s['video_thumbnail_url']:
+                video_id = s['video_thumbnail_url'].split('/')[6]
 
             s_title = s['title']
 
@@ -191,24 +186,19 @@ class Skillshare(object):
 def splash():
 
     print(r"""   
-                 ____  _    _ _ _     _                          ____  _     
-                / ___|| | _(_) | |___| |__   __ _ _ __ ___      |  _ \| |    
-                \___ \| |/ / | | / __| '_ \ / _` | '__/ _ \_____| | | | |    
-                 ___) |   <| | | \__ \ | | | (_| | | |  __/_____| |_| | |___ 
-                |____/|_|\_\_|_|_|___/_| |_|\__,_|_|  \___|     |____/|_____|  
-                             _ __ ___  _ _  _ _ _  ___  _ _ 
-                            | / /| __>| \ || | | || . || | |
-                            |  \ | _> |   || | | ||   |\   /
-                            |_\_\|___>|_\_||__/_/ |_|_| |_| 
-                    
-                    
-                        
-                     ####### #     # ####### #     #    #     #####  #    # 
-                     #     # ##    # #       #     #   # #   #     # #   #  
-                     #     # # #   # #       #     #  #   #  #       #  #   
-                     #     # #  #  # #####   ####### #     # #       ###    
-                     #     # #   # # #       #     # ####### #       #  #   
-                     #     # #    ## #       #     # #     # #     # #   #  
-                     ####### #     # ####### #     # #     #  #####  #    # 
+                  _   _   _   _   _   _   _   _   _   _   _   _   _   _   _  
+                 / \ / \ / \ / \ / \ / \ / \ / \ / \ / \ / \ / \ / \ / \ / \ 
+                ( S | K | I | L | L | S | H | A | R | E | - | 6 | 9 | D | L )
+                 \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/          
+             
+                              8888888b.88888888888888    d8P  
+                              888   Y88b   888    888   d8P   
+                              888    888   888    888  d8P    
+                              888   d88P   888    888d88K     
+                              8888888P"    888    8888888b    
+                              888          888    888  Y88b   
+                              888          888    888   Y88b  
+                              888          888    888    Y88b based on KENWAY project
+                                
                                                                                                          
                 """)
