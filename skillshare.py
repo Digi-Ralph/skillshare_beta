@@ -1,12 +1,18 @@
-import requests, json, sys, re, os
+import requests
+import json
+import sys
+import re
+import os
 import cloudscraper
 from slugify import slugify
+
 
 class Skillshare(object):
     def __init__(
         self,
         cookie,
-        download_path=os.environ.get('FILE_PATH', './drive/Shareddrives/SharedBox/01 SkillBox'),
+        download_path=os.environ.get(
+            'FILE_PATH', './drive/Shareddrives/SharedBox/01 SkillBox'),
         pk='BCpkADawqM2OOcM6njnM7hf9EaK6lIFlqiXB0iWjqGWUQjU7R8965xUvIQNqdQbnDTLz0IAO7E6Ir2rIbXJtFdzrGtitoee0n1XXRliD-RH9A-svuvNW9qgo3Bh34HEZjXjG4Nml4iyz3KqF',
         brightcove_account_id=3695997568001,
     ):
@@ -24,7 +30,7 @@ class Skillshare(object):
             return False
 
     def download_course_by_url(self, url):
-        m = re.match(r'https://www.skillshare.com/classes/.*?/(\d+)', url)
+        m = re.match(r'https://www.skillshare.com/en/classes/.*?/(\d+)', url)
 
         if not m:
             raise Exception('Failed to parse class ID from URL')
@@ -63,11 +69,11 @@ class Skillshare(object):
         if not os.path.exists(base_path):
             os.makedirs(base_path)
 
-        #for u in data['_embedded']['units']['_embedded']['units']:
+        # for u in data['_embedded']['units']['_embedded']['units']:
         for s in data['_embedded']['sessions']['_embedded']['sessions']:
             video_id = None
-            #print(s,':', s['video_hashed_id'])
-            #continue
+            # print(s,':', s['video_hashed_id'])
+            # continue
             if 'video_hashed_id' in s and s['video_hashed_id']:
                 video_id = s['video_hashed_id'].split(':')[1]
 
@@ -106,11 +112,11 @@ class Skillshare(object):
         res = scraper.get(
             url,
             headers={
-            'Accept': 'application/vnd.skillshare.class+json;,version=0.8',
-            'User-Agent': 'Skillshare/5.3.0; Android 9.0.1',
-            'Host': 'api.skillshare.com',
-            'Referer': 'https://www.skillshare.com/',
-            'cookie': self.cookie,
+                'Accept': 'application/vnd.skillshare.class+json;,version=0.8',
+                'User-Agent': 'Skillshare/5.3.0; Android 9.0.1',
+                'Host': 'api.skillshare.com',
+                'Referer': 'https://www.skillshare.com/',
+                'cookie': self.cookie,
             }
         )
 
@@ -175,10 +181,12 @@ class Skillshare(object):
                     dl += len(data)
                     f.write(data)
                     done = int(50 * dl / total_length)
-                    sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50 - done)))
+                    sys.stdout.write("\r[%s%s]" %
+                                     ('=' * done, ' ' * (50 - done)))
                     sys.stdout.flush()
 
             print('')
+
 
 def splash():
 
